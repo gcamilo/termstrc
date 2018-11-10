@@ -7,6 +7,9 @@ param.dyntermstrc_nss <- function(x,...) {
   for(i in seq(x[[1]]$n_group)) param[[i]] =  t(mapply(function(j) x[[j]]$opt_result[[i]]$par,seq_along(x)))
   names(param) <- x[[1]]$group                          
   class(param) <- "dyntermstrc_param"
+  
+  for(i in seq(x[[1]]$n_group)) param[[i]] = data.table(param[[i]],ddate=sapply(x,function(j) as.character(j$ddate)))
+  
   param
 }
 
