@@ -22,7 +22,7 @@ estim_nss.dyncouponbonds <- function(dataset, group, matrange="all",method="ns",
     ## static estimation
     bonddata <- dataset[[i]]
     res[[i]] <- estim_nss(bonddata, group, matrange, method=method, startparam=b, lambda=lambda,tauconstr,constrOptimOptions)
-    res[[i]]["ddate"] <- bonddata$RD$TODAY
+    res[[i]]["ddate"] <- as.character(bonddata$RD$TODAY)
   }
   class(res) <- "dyntermstrc_nss"
 
