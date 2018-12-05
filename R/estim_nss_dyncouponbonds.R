@@ -34,7 +34,7 @@ estim_nss.dyncouponbonds <- function(dataset, group, matrange="all",method="ns",
     doParallel::registerDoParallel(cl)
     
     ## perform sequence of term structure estimations
-    res <- foreach(i = seq(length(dataset)),.packages = c("termstrc")) %dopar% {
+    res <- foreach(i = seq(length(dataset)),.packages = c("termstrc","RQuantLib")) %dopar% {
       
       ## static estimation
       bonddata <- dataset[[i]]
