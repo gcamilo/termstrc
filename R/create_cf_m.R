@@ -38,7 +38,7 @@ create_maturities_matrix <- function(group,include_price=FALSE) {
   
   # RQuantLib version
   # DayCounter: 2 ActualActual
-  year_diff <- mapply(function(i) yearFraction(as.Date(group$TODAY),
+  year_diff <- mapply(function(i) RQuantLib::yearFraction(as.Date(group$TODAY),
                            as.Date(group$CASHFLOW$DATE)[[i]], 2), 1:sum(n_of_cf))
   
   # the number of rows of the matrix is the number of 
