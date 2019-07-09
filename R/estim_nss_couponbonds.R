@@ -135,7 +135,7 @@ estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct
                                 ci = constraints$ci,
                                 mu = 1e-04,
                                 control = constrOptimOptions$control,
-                                method = "BFGS",
+                                method = "SANN",
                                 outer.iterations = constrOptimOptions$outer.iterations,
                                 outer.eps = constrOptimOptions$outer.eps,
                                 lambda, m, cf, weights, p)
@@ -147,7 +147,7 @@ estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct
                                 ci = constraints$ci,
                                 mu = 1e-04,
                                 control = constrOptimOptions$control,
-                                method = "BFGS",
+                                method = "SANN",
                                 outer.iterations = constrOptimOptions$outer.iterations,
                                 outer.eps = constrOptimOptions$outer.eps,
                                 m, cf, weights, p)
