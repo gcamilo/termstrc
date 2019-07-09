@@ -124,7 +124,6 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
 }
 
 ## Estimate zero-coupon yield curve
-
 estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p) {
 
   if(method=="dl") {
@@ -155,69 +154,63 @@ estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct
     opt_result
 }
 
-estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p) {
-  
-  if(method=="dl") {
-    
-    
-    outer_controls <- list(eps = 1e-4, itmax = 2000, ilack.max = 100, trace = TRUE,
-                           method = "BFGS", NMinit = FALSE,kkt2.check = FALSE)    
-    
-    constraint_fn <- function(x,...){
-      const = rep(NA,2)
-      const[1] <- x[1] - 1
-      const[2] <- x[1] + x[2] - 1
-      
-      const
-    }
-    
-    constraint_fn_jac <- function(x,...){
-      const_jac <- matrix(NA,2,3)
-      const_jac[1,] <- c(1,0,0)
-      const_jac[2,] <- c(1,1,0)
-      const_jac
-    }
-    
-    constraint_eq <- function(x,...){
-      return(0)
-    }
-    
-    constraint_eq_jac <- function(x,...){
-      eq_jac <- matrix(0,1,3)
-      return(eq_jac)
-    }
-    
-    # grad_fn <- function(x,...){
-    #   argList <- list(...)
-    #   print(length(argList))
-    #   return(grad_objfct(x,argList[[1]],argList[[2]],argList[[3]],argList[[4]],argList[[5]]))
-    # }
-    # 
-    opt_result <- auglag(     par     = startparam,
-                              fn      = objfct,
-                              gr      = grad_objfct, #grad_fn
-                              hin     = constraint_fn,
-                              hin.jac = constraint_fn_jac,
-                              heq     = constraint_eq,
-                              heq.jac = constraint_eq_jac,
-                              control.outer = outer_controls,
-                              control.optim = constrOptimOptions$control,
-                              lambda, m, cf, weights, p)
-  } else {
-    opt_result <- constrOptim(theta = startparam,
-                              f = objfct,
-                              grad = grad_objfct,
-                              ui = constraints$ui,
-                              ci = constraints$ci,
-                              mu = 1e-04,
-                              control = constrOptimOptions$control,
-                              method = "BFGS",
-                              outer.iterations = constrOptimOptions$outer.iterations,
-                              outer.eps = constrOptimOptions$outer.eps,
-                              m, cf, weights, p)
-  }
-  opt_result
-}
+
+# estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p) {
+# 
+#   if(method=="dl") {
+# 
+#     outer_controls <- list(eps = 1e-7, itmax = 200, ilack.max = 100, trace = FALSE,
+#                            method = "BFGS", NMinit = TRUE,kkt2.check = FALSE)
+# 
+#     constraint_fn <- function(x,...){
+#       const = rep(NA,2)
+#       const[1] <- x[1] - 1
+#       const[2] <- x[1] + x[2] - 1
+# 
+#       const
+#     }
+# 
+#     constraint_fn_jac <- function(x,...){
+#       const_jac <- matrix(NA,2,3)
+#       const_jac[1,] <- c(1,0,0)
+#       const_jac[2,] <- c(1,1,0)
+#       const_jac
+#     }
+# 
+#     constraint_eq <- function(x,...){
+#       return(0)
+#     }
+# 
+#     constraint_eq_jac <- function(x,...){
+#       eq_jac <- matrix(0,1,3)
+#       return(eq_jac)
+#     }
+# 
+#     opt_result <- alabama::auglag(     par     = startparam,
+#                               fn      = objfct,
+#                               gr      = grad_objfct, #grad_fn
+#                               hin     = constraint_fn,
+#                               hin.jac = constraint_fn_jac,
+#                               heq     = constraint_eq,
+#                               heq.jac = constraint_eq_jac,
+#                               control.outer = outer_controls,
+#                               control.optim = constrOptimOptions$control,
+#                               lambda, m, cf, weights, p)
+#   } else {
+#     opt_result <- constrOptim(theta = startparam,
+#                               f = objfct,
+#                               grad = grad_objfct,
+#                               ui = constraints$ui,
+#                               ci = constraints$ci,
+#                               mu = 1e-04,
+#                               control = constrOptimOptions$control,
+#                               method = "BFGS",
+#                               outer.iterations = constrOptimOptions$outer.iterations,
+#                               outer.eps = constrOptimOptions$outer.eps,
+#                               m, cf, weights, p)
+#   }
+#   opt_result
+# }
 
 ### Start parameter search routine for bond data
 
